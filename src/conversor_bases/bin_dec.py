@@ -13,7 +13,10 @@ def binary_to_decimal(value: str) -> str:
     Raises:
         ValueError: Si la cadena no representa un binario válido.
     """
-    raise NotImplementedError("bin-dec pendiente de implementación")
+    normalized = value.strip()
+    if not normalized or any(ch not in "01" for ch in normalized):
+        raise ValueError(f"'{value}' no es un binario válido")
+    return str(int(normalized, 2))
 
 
 def decimal_to_binary(value: str) -> str:
@@ -28,4 +31,7 @@ def decimal_to_binary(value: str) -> str:
     Raises:
         ValueError: Si la cadena no representa un decimal válido.
     """
-    raise NotImplementedError("dec-bin pendiente de implementación")
+    normalized = value.strip()
+    if not normalized or not normalized.isdigit():
+        raise ValueError(f"'{value}' no es un decimal válido")
+    return format(int(normalized), "b")
