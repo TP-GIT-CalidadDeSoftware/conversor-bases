@@ -8,7 +8,7 @@ ALL_COMMANDS = ["bin-dec", "dec-bin", "dec-hex", "hex-dec", "bin-hex", "hex-bin"
 
 # Comandos cuyo módulo todavía no fue implementado. A medida que cada
 # integrante implemente su módulo, debe quitar sus comandos de esta lista.
-NOT_IMPLEMENTED_COMMANDS = ["bin-dec", "dec-bin", "bin-hex", "hex-bin"]
+NOT_IMPLEMENTED_COMMANDS = ["bin-dec", "dec-bin"]
 
 
 def test_parser_accepts_all_commands() -> None:
@@ -66,6 +66,32 @@ def test_main_dec_hex_success(
 def test_main_dec_hex_invalid_input(command: str, capsys: pytest.CaptureFixture[str]) -> None:
     """Una entrada inválida devuelve 1 y muestra el error por stderr."""
     exit_code = main([command, "ZZ"])
+    assert exit_code == 1
+    captured = capsys.readouterr()
+    assert "Error" in captured.err
+
+
+@pytest.mark.parametrize(
+    ("command", "value", "expected"),
+    [
+        ("bin-hex", "11111111", "FF"),
+        ("hex-bin", "FF", "11111111"),
+    ],
+)
+def test_main_bin_hex_success(
+    command: str, value: str, expected: str, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Los comandos bin-hex/hex-bin devuelven 0 e imprimen el resultado."""
+    exit_code = main([command, value])
+    assert exit_code == 0
+    captured = capsys.readouterr()
+    assert captured.out.strip() == expected
+
+
+@pytest.mark.parametrize("command", ["bin-hex", "hex-bin"])
+def test_main_bin_hex_invalid_input(command: str, capsys: pytest.CaptureFixture[str]) -> None:
+    """Una entrada inválida devuelve 1 y muestra el error por stderr."""
+    exit_code = main([command, "xyz"])
     assert exit_code == 1
     captured = capsys.readouterr()
     assert "Error" in captured.err
