@@ -1,0 +1,5 @@
+# El conversor solo usa la librería estándar de Python.
+# Si en el futuro se agregan dependencias de runtime, habría que agregarlas acá
+# y regenerar con:
+#   pip install pip-tools
+#   pip-compile --strip-extras pyproject.toml -o requirements.txt
