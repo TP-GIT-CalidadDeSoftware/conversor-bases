@@ -1,5 +1,7 @@
 """Conversión entre binario y hexadecimal."""
 
+import string
+
 
 def binary_to_hex(value: str) -> str:
     """Convierte un número binario (cadena) a hexadecimal (cadena).
@@ -13,7 +15,10 @@ def binary_to_hex(value: str) -> str:
     Raises:
         ValueError: Si la cadena no representa un binario válido.
     """
-    raise NotImplementedError("bin-hex pendiente de implementación")
+    normalized = value.strip()
+    if not normalized or any(ch not in "01" for ch in normalized):
+        raise ValueError(f"'{value}' no es un binario válido")
+    return format(int(normalized, 2), "X")
 
 
 def hex_to_binary(value: str) -> str:
@@ -28,4 +33,7 @@ def hex_to_binary(value: str) -> str:
     Raises:
         ValueError: Si la cadena no representa un hexadecimal válido.
     """
-    raise NotImplementedError("hex-bin pendiente de implementación")
+    normalized = value.strip()
+    if not normalized or any(ch not in string.hexdigits for ch in normalized):
+        raise ValueError(f"'{value}' no es un hexadecimal válido")
+    return format(int(normalized, 16), "b")
